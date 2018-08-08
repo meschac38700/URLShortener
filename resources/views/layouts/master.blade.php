@@ -3,19 +3,13 @@
 <head>
 	<title>@yield('title')</title>
 	@yield('header')
-	<style type="text/css">
-		.content
-		{
-			
-		}
-		.error-msg{
-			color: #ff0000;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css') }}">
 </head>
 <body>
-	<h1>@yield('h1')</h1>
-	@yield('content')
+	<div class="wrapper">
+		<h1>@yield('h1')</h1>
+		@yield('content')
+	</div>
 	<footer>
 		@yield('footer')
 	</footer>

@@ -13,7 +13,7 @@
 			{{ csrf_field() }}
 			{!!$errors->first('message', '<p class="error-msg">:message</p>')!!}
 			<input type="text" name="url"  placeholder="Enter your url ..." value="{{ ($errors->first('bad_url'))?$errors->first('bad_url'):"" }}">
-			<input type="submit" name="valider">
+			<input type="submit" value="Short url">
 		</form>
 	</div>
 
