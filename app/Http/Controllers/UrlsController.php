@@ -54,22 +54,15 @@ class UrlsController extends Controller
         if( $validUrl )
         {
             // Check si URl deja raccourcie
-            $url = Url::whereUrl($url_post)->first();
-            // Sinon creation d'une nouvelle short url 
-            if( !$url )
-            {
-                // create new shortened url
-                $url = Url::create([
-                    "url" => $url_post,
-                    "shortened" => Url::generateShortenedURL()
-                ]);
-
-
-                
-            }
+            //si pas de resultat creation d'un shortened et stockage dans la BD
+            $url = Url::firstOrCreate(
+                            ['url'=>$url_post], // conditions de la requete
+                            ['shortened'=>Url::generateShortenedURL()] // data necessaire à la création si l'url n'existe pas
+                        );
 
             return view('pages.result')->withUrlShortened($url->shortened);
         }
+        // Si url pas valide 
         $errors = [
             "http_response_code" => 400,
             "response" =>  "Bad request",
@@ -77,9 +70,8 @@ class UrlsController extends Controller
             "bad_url"   => $url_post,
             "message"   => FormatErrorMessage::replaceAttributeToFieldName(\Lang::get('validation.url'), "url", $url_post)
         ];
+        // redirection vers la page d'accueil avec un message d'erreur
         return redirect()->back()->withErrors($errors);
-        // return short url
-        dd($request->url);
     }
 
     /**
@@ -90,7 +82,6 @@ class UrlsController extends Controller
      */
     public function show( $shortURL )
     {
-
         $url_exist = Url::whereShortened($shortURL)->firstOrFail();
         $url = $url_exist->url;
         if(strstr($url, "http") )

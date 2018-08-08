@@ -46,6 +46,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if( $exception instanceof ModelNotFoundException )
+        {
+            
+            $errors = [
+                "http_response_code" => 400,
+                "response" =>  "Bad request",
+                "comment" => "Invalid URL",
+                "bad_url"   => $request->url,
+                "message"   => FormatErrorMessage::replaceAttributeToFieldName(\Lang::get('validation.required'), "url", $url_post)
+            ];
+            return redirect()->back()->withErrors($errors);
+        }
         return parent::render($request, $exception);
     }
 }
