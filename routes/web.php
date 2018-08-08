@@ -11,6 +11,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', "UrlsController@create");
-Route::post('/', "UrlsController@store");
-Route::get('/{shortURL}', "UrlsController@show");
+Route::name('home')->get('/', "UrlsController@create");
+Route::name('url.store')->post('/', "UrlsController@store");
+Route::name('url.show')->get('/{shortURL}', "UrlsController@show");
